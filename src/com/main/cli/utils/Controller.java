@@ -1,14 +1,17 @@
 package com.main.cli.utils;
 
+import com.main.cli.actions.Add;
+import com.main.cli.actions.List;
+import com.main.cli.actions.Update;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class Handler {
-	private Map<String, Runnable > options = new HashMap<String, Runnable >();
+public class Controller {
+	private Map<String, Runnable > options = new HashMap<>();
 	private String args[];
-	private Task task = new Task();
 
-	public Handler(String args[]) {
+	public Controller(String args[]) {
 		if (!this.isValidCommand(args)) {
 			System.out.println("Invalid entry");
 			return;
@@ -20,13 +23,16 @@ public class Handler {
 
 	private void fillOptions () {
 		options.put("add", () -> {
-			this.task.add(this.args[1]);
+			Add action = new Add();
+			action.execute(this.args[1]);
 		});
 		options.put("update", () -> {
-			this.task.update(this.args[1], this.args[2]);
+			Update action = new Update();
+			action.execute(this.args[1], this.args[2]);
 		});
 		options.put("list", () -> {
-			this.task.listTasks();
+			List action = new List();
+			action.execute();
 		});
 		options.put("delete", () -> System.out.println("Delete command"));
 	}
